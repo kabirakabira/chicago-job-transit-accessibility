@@ -1,3 +1,4 @@
 # Data folder and dependencies/rdata
 /data
 /dependencies/Chicago_OSRM.rdata
+.Rproj.user
