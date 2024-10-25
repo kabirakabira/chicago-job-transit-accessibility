@@ -1,0 +1,33 @@
+Follow these steps to set up an osrm-backend on your machine using Docker. These instructions are for Windows OS but can be adapted with minimal changes.
+
+First, open your browser and download and install the Docker application for your OS.
+
+https://www.docker.com/products/docker-desktop/
+
+Next, download a file from Geofabrik to use for routing. I downloaded the file for Illinois.
+
+https://download.geofabrik.de/
+
+Download the osm.pbf file. Note the size. Open your newly installed docker, and head to settings.
+
+In the Resources pane, make sure your allocated RAM is at least 10x the size of the osm.pbf file. Increase CPU and swap memory limits if possible too.
+
+In the File Sharing pane, make sure your local drive (C, in my case) is accessible via Docker.
+
+In your C drive, create a folder "data" and move your osm.pbf file into it.
+
+Now, in a command prompt window, change directory to your C drive and use the following commands. Edit filepaths/names as needed.
+
+docker pull osrm/osrm-backend
+
+docker run -t -v "c:/data:/data" osrm/osrm-backend osrm-extract -p /opt/foot.lua "/data/illinois-latest.osm.pbf"
+
+my time for completion: ~ 2 mins
+
+docker run -t -v "c:/data:/data" osrm/osrm-backend osrm-contract "/data/illinois-latest.osrm"
+
+my time for completion:  ~ 1.5 hrs
+
+docker run -t -i -p 5000:5000 -v "c:/data:/data" osrm/osrm-backend osrm-routed "/data/illinois-latest.osrm"
+
+If everything ran okay you should now have a locally hosted osrm server at localhost:5000. If you don't, recheck filepaths and make sure the commands you ran are compliant with your specific OS (Mac vs Linux vs Windows). Lastly, make sure you allocated enough memory through Docker's resource settings.
